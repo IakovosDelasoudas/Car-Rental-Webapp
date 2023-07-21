@@ -21,3 +21,16 @@ class Booking(models.Model):
 
     def __str__(self):
         return f"Booking {self.pk} by {self.user.username}"
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone_number = models.CharField(max_length=15)
+    rental_history = models.ManyToManyField('Booking')
+    license_number = models.CharField(max_length=255)
+
+class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)
+    rating = models.IntegerField()
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)

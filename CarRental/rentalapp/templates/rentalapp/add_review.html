@@ -1,0 +1,10 @@
+{% extends 'rentalapp/base.html' %}
+
+{% block content %}
+<h2>Add Review for {{ car.make }} {{ car.model }}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit Review</button>
+</form>
+{% endblock %}

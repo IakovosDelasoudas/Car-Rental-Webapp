@@ -1,0 +1,15 @@
+{% extends 'rentalapp/base.html' %}
+
+{% block content %}
+<h2>{{ car.make }} {{ car.model }}</h2>
+<p>Price per day: {{ car.price_per_day }}</p>
+<h3>Reviews</h3>
+{% for review in reviews %}
+    <h4>{{ review.user.username }}</h4>
+    <p>Rating: {{ review.rating }}</p>
+    <p>{{ review.comment }}</p>
+{% empty %}
+    <p>No reviews yet.</p>
+{% endfor %}
+<a href="{% url 'add_review' car.id %}">Add a review</a>
+{% endblock %}

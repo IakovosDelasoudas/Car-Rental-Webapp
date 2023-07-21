@@ -1,0 +1,15 @@
+{% extends 'rentalapp/base.html' %}
+
+{% block content %}
+    <h2>Car Catalog</h2>
+
+    <ul>
+        {% for car in cars %}
+        <li>
+            <a href="{% url 'car_details' car.id %}">
+                {{ car.make }} {{ car.model }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'rentalapp/base.html' %}
+
+{% block content %}
+    <h2>{{ car.make }} {{ car.model }}</h2>
+
+    <p>Seats: {{ car.seats }}</p>
+    <p>Color: {{ car.color }}</p>
+    <p>Price per day: {{ car.price_per_day }}</p>
+    <p>Available: {{ car.available }}</p>
+{% endblock %}

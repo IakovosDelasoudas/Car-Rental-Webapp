@@ -10,6 +10,28 @@ class Car(models.Model):
     price_per_day = models.DecimalField(max_digits=5, decimal_places=2)
     available = models.BooleanField(default=True)
 
+# start
+    COUPE_SPORT = 'COUPE/SPORT'
+    HATCHBACK = 'HATCHBACK'
+    SUV = 'SUV'
+    VAN = 'VAN'
+    SEDAN = 'SEDAN'
+
+    CAR_TYPE_CHOICES = [
+        (COUPE_SPORT, 'Coupe/Sport'),
+        (HATCHBACK, 'Hatchback'),
+        (SUV, 'SUV/4x4'),
+        (VAN, 'Van'),
+        (SEDAN, 'Sedan'),
+    ]
+
+    type = models.CharField(
+        max_length=12,
+        choices=CAR_TYPE_CHOICES,
+        default=HATCHBACK,
+    )
+# end
+
     def __str__(self):
         return f"{self.make} {self.model}"
 

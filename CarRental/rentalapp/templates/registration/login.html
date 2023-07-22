@@ -1,0 +1,40 @@
+{% extends 'rentalapp/base.html' %}
+
+{% block content %}
+<style>
+    .login-form {
+        width: 50%;
+        margin: 0 auto;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .login-form h2, .login-form form, .login-form a {
+        text-align: center;
+    }
+
+    .login-form button {
+        width: 100%;
+        padding: 10px;
+        background-color: #508eb7;
+        border: none;
+        color: white;
+        font-size: 1.2em;
+    }
+</style>
+
+<div class="login-form">
+    <h2>Login</h2>
+    <form method="post">
+        {% csrf_token %}
+        <p><label for="username">Username:</label></p>
+        <p><input id="username" type="text" name="username" required></p>
+        <p><label for="password">Password:</label></p>
+        <p><input id="password" type="password" name="password" required></p>
+        <button type="submit">Login</button>
+    </form>
+    <p>Are you new and don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+</div>
+{% endblock %}

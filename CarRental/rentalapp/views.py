@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login
 from .models import Car, Booking, UserProfile, Review
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -9,10 +11,16 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from .models import Car
 from .forms import BookingForm
+from django.contrib.auth import logout
+
 
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
 
 def book_car(request, car_id):
     car = get_object_or_404(Car, pk=car_id)
@@ -40,11 +48,25 @@ def register(request):
             profile = profile_form.save(commit=False)
             profile.user = user
             profile.save()
-            return redirect('login')
+            return redirect('home')
     else:
         user_form = UserCreationForm()
         profile_form = UserProfileForm()
     return render(request, 'registration/register.html', {'user_form': user_form, 'profile_form': profile_form})
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'registration/login.html', {'form': form})
 
 @login_required
 def add_review(request, car_id):

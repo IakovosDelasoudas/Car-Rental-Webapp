@@ -1,11 +1,38 @@
 {% extends 'rentalapp/base.html' %}
 
 {% block content %}
-<h2>Register</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ user_form.as_p }}
-    {{ profile_form.as_p }}
-    <button type="submit">Register</button>
-</form>
+<style>
+    .register-form {
+        width: 50%;
+        margin: 0 auto;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .register-form h2, .register-form a {
+        text-align: center;
+    }
+
+    .register-form button {
+        width: 100%;
+        padding: 10px;
+        background-color: #508eb7;
+        border: none;
+        color: white;
+        font-size: 1.2em;
+    }
+</style>
+
+<div class="register-form">
+    <h2>Register</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        {{ profile_form.as_p }}
+        <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="{% url 'login' %}">Login in here</a></p>
+</div>
 {% endblock %}

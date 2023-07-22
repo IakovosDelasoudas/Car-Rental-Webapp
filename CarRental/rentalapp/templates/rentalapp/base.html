@@ -1,44 +1,124 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Car Rental Service</title>
-    <!-- Include Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>Car Rental</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .header {
+            background-color: #508eb7;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .header h1 {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 2.5em;
+            margin: 0;
+            flex-grow: 1;
+            text-decoration: none;
+        }
+
+        .header h1 a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .header a {
+            text-decoration: none;
+        }
+
+
+        .header div img {
+            margin-right: 10px;
+        }
+
+        .header div {
+            display: flex;
+            align-items: center;
+            flex-basis: 300px;
+            justify-content: space-between;
+        }
+
+        .header img {
+            margin-left: 10px;
+        }
+
+        .header div select {
+            width: 150px;
+            margin-right: 50px;
+        }
+
+        .header div a {
+            margin: 0 10px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            text-decoration: none;
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .header div a {
+                font-size: 1em;
+            }
+        }
+        
+        .main-content {
+            margin-top: 100px;
+            padding: 20px;
+        }
+        
+        .footer {
+            background-color: #508eb7;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            color: white;
+            font-family: 'Arial', sans-serif;
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Car Rental Service</a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Browse Cars</a>
-                </li>
-                <!-- Add more navigation items as needed -->
-            </ul>
+    <div class="header">
+        <a href="{% url 'home' %}"><h1>Car Rental</h1></a>
+        <div>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'register' %}">Register</a>
+            <!-- Here add logic for logged in/logged out state -->
+            <a href="{% url 'login' %}">Login</a>
+            {% load static %}
+            <img src="{% static 'images/us_flag.png' %}" alt="US Flag" height="20">
+            <select>
+                <option>English</option>
+                <option disabled>More languages to be added...</option>
+            </select>
         </div>
-    </nav>
-    
-    <!-- Main Content -->
-    <div class="container">
+    </div>
+
+    <div class="main-content">
         {% block content %}
+        <!-- Child content will be injected here -->
         {% endblock %}
     </div>
-    
-    <!-- Footer -->
-    <footer class="footer mt-auto py-3">
-        <div class="container">
-            <span class="text-muted">Copyright © 2023 Car Rental Service</span>
-        </div>
-    </footer>
-    
-    <!-- Include Bootstrap JavaScript and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <div class="footer">
+        Car Rental Service - All Rights Reserved
+    </div>
 </body>
 </html>

@@ -69,6 +69,19 @@ def login_view(request):
     return render(request, 'registration/login.html', {'form': form})
 
 @login_required
+def profile(request):
+    if request.method == 'POST':
+        # Update the user object
+        request.user.first_name = request.POST['first_name']
+        request.user.last_name = request.POST['last_name']
+        request.user.email = request.POST['email']
+        request.user.save()
+        # Redirect to the same page after the form is processed to prevent a post-data-refresh
+        return redirect('profile')
+    else:
+        return render(request, 'profile.html')
+
+@login_required
 def add_review(request, car_id):
     car = get_object_or_404(Car, id=car_id)
     if request.method == 'POST':

@@ -1,7 +1,16 @@
 {% extends 'rentalapp/base.html' %}
 
+{% load static %}   <!-- Load static files -->
+
 {% block content %}
-    <h2>Welcome to our Car Rental Service!</h2>
-    <p>Find the perfect car for your next adventure.</p>
-    <!-- You can add more things like a search form here -->
+    <h1>Welcome to Car Rental</h1>
+    <p>Your one-stop solution for comfortable and affordable car rentals. Navigate through our extensive car catalog, book instantly, and get ready to hit the road!</p>
+    <a href="{% url 'car_catalog' %}">Explore Car Catalog</a>
+
+    <!-- If you want to display special offers, add them here -->
+    <h2>Special Offers</h2>
+    <p>Stay tuned for amazing deals!</p>
+
+    <!-- You can add images or graphics here -->
+    <img src="{% static 'images/homepage_image.jpg' %}" alt="Car image">
 {% endblock %}

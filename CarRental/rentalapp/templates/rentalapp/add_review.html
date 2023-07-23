@@ -1,10 +1,120 @@
 {% extends 'rentalapp/base.html' %}
 
 {% block content %}
-<h2>Add Review for {{ car.make }} {{ car.model }}</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit Review</button>
-</form>
+    <style>
+        .add-review {
+            text-align: center;
+            padding: 2em;
+        }
+
+        .add-review h1 {
+            color: #1E70C8;
+        }
+
+        .add-review form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin: 2em auto;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .add-review form input, form textarea {
+            width: 100%;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #508eb7;
+            font-size: 1.1em;
+        }
+
+        .add-review form button {
+            margin-top: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border-radius: 2em;
+            cursor: pointer;
+        }
+
+        .add-review form button:hover {
+            background-color: #0056b3;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 8em;
+            left: 100px;
+            font-size: 1.5em;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .review-rating {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .review-rating label {
+            font-size: 2em; /* Increase the size of the stars */
+            cursor: pointer;
+        }
+    </style>
+
+    <a href="{% url 'car_detail' car.id %}" class="back-button">&#x2190; Back</a>
+
+    <div class="add-review">
+        <h1>Add Review for {{ car.make }} {{ car.model }}</h1>
+        <form method="post">
+            {% csrf_token %}
+            <p>Click on a star to select your rating:</p>
+            <div class="review-rating">
+                {% for i in "12345"|make_list %}
+                    <input type="radio" id="star{{ i }}" name="rating" value="{{ i }}" style="display: none;">
+                    <label for="star{{ i }}">
+                        {% if i <= form.rating.value|default:0 %}
+                            ⭐ <!-- Display filled star for points of rating -->
+                        {% else %}
+                            ☆ <!-- Display empty star for remaining points up to 5 -->
+                        {% endif %}
+                    </label>
+                {% endfor %}
+            </div>
+            {{ form.comment }}
+            <button type="submit">Submit Review</button>
+        </form>
+    </div>
+
+    <script>
+    // get all the radio inputs
+    const stars = Array.from(document.querySelectorAll('input[name="rating"]'));
+
+    // update the display
+    function updateStars() {
+        const checkedStar = stars.find(star => star.checked);
+        const checkedIndex = checkedStar ? parseInt(checkedStar.value) : 0;
+
+        stars.forEach((star, index) => {
+            // if this star's value is less than or equal to the checked value, show a filled star
+            if (index < checkedIndex) {
+                star.nextElementSibling.textContent = '⭐';
+            } else {
+                star.nextElementSibling.textContent = '☆';
+            }
+        });
+    }
+
+    // call updateStars when the form state changes
+    stars.forEach(star => star.addEventListener('change', updateStars));
+
+    // initial setup
+    updateStars();
+    </script>
+
+
 {% endblock %}

@@ -101,6 +101,25 @@
             color: rgb(0, 0, 0);
             font-family: 'Arial', sans-serif;
         }
+
+        ul.messages {
+            width: 100%;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            color: black; /* Dark gray text color for readability */
+            background-color: #ff7f7f; /* Soft red background for error messages */
+            list-style-type: none; /* Remove the bullet points */
+            box-sizing: border-box; /* Include padding and border in element's total width and height */
+        }
+
+        ul.messages.error {
+            background-color: #ff7f7f; /* Soft red background for error messages */
+        }
+
+        ul.messages li {
+            margin-left: 0; /* Remove the left margin for the list items */
+        }
     </style>
 </head>
 <body>
@@ -136,5 +155,12 @@
     <div class="footer">
         Car Rental Service - All Rights Reserved
     </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        setTimeout(function() {
+            $('.messages').fadeOut('fast');
+        }, 3000); // will work with every alert after 3 seconds
+    </script>
 </body>
 </html>

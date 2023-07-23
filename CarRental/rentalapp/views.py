@@ -20,21 +20,20 @@ from django.shortcuts import render, get_object_or_404
 from .models import Car, Review
 from django.db.models import Q
 from django.contrib import messages
-
+from django.db.models import Count
 
 
 # Create your views here.
 def home(request):
+    recommended_cars = []
     if request.user.is_authenticated:
-        user_profile = UserProfile.objects.get(user=request.user)
-        most_recent_car_type = user_profile.get_most_recent_car_type()
+        # Fetch the latest booking of the user
+        latest_booking = Booking.objects.filter(user=request.user).order_by('-end_date').first()
 
-        if most_recent_car_type:
-            recommended_cars = Car.objects.filter(type=most_recent_car_type)
-        else:
-            recommended_cars = Car.objects.none()  # Return an empty QuerySet
-    else:
-        recommended_cars = Car.objects.none()  # Return an empty QuerySet for non-logged in users
+        # If there was a booking, fetch other cars of the same type
+        if latest_booking:
+            car_type = latest_booking.car.type
+            recommended_cars = Car.objects.filter(type=car_type, available=True).exclude(id=latest_booking.car.id)[:5]
 
     context = {
         'recommended_cars': recommended_cars,

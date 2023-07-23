@@ -41,6 +41,41 @@
         }
     </style>
 
+    <!-- Additional styles for the recommended cars -->
+    <style>
+        .recommended-cars {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .recommended-car {
+            width: 200px;
+            margin: 20px;
+            text-align: center;
+        }
+
+        .recommended-car img {
+            width: 100%;
+            height: auto;
+        }
+
+        .recommended-car h3 {
+            margin: 0;
+        }
+
+        .recommended-car a {
+            color: #007BFF;
+            text-decoration: none;
+            display: inline-block;
+            width: 100%;
+            padding: 10px 0;
+            background-color: #e6e6e6;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+    </style>
+
     <h1>Welcome to Car Rental</h1>
     <p>Your one-stop solution for comfortable and affordable car rentals. Navigate through our extensive car catalog, book instantly, and get ready to hit the road!</p>
     <a href="{% url 'car_catalog' %}">Explore Car Catalog</a>
@@ -53,12 +88,22 @@
     
     {% if user.is_authenticated %}
         <p>Recommended just for you!</p>
-        <!-- Display the recommended cars here -->
-        {% for car in recommended_cars %}
-            <!-- Car information and link to its detail page here -->
-        {% empty %}
+        <div class="recommended-cars">
+            {% for car in recommended_cars %}
+            <div class="recommended-car">
+                {% if car.image %}
+                <img src="{{ car.image.url }}" alt="{{ car.make }} {{ car.model }}">
+                {% else %}
+                <p>No image available.</p>
+                {% endif %}
+                <h3>{{ car.make }} {{ car.model }}</h3>
+                <p>{{ car.price_per_day }} €/day</p>
+                <a href="{% url 'car_detail' car.id %}">View Details</a>
+            </div>
+            {% empty %}
             <p>No recommendations available at the moment. Check back after you've rented some cars!</p>
-        {% endfor %}
+            {% endfor %}
+        </div>
     {% else %}
         <p>To provide personalized recommendations, please log in or sign up if you don't have an account yet.</p>
         <a href="{% url 'login' %}">Login</a>

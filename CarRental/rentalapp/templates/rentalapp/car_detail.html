@@ -45,7 +45,18 @@
         margin-top: 1em;
         border-radius: 2em;
     }
+
+    .back-button {
+        position: absolute;
+        top: 8em;
+        left: 100px;
+        font-size: 1.5em;
+        text-decoration: none;
+        color: #333;
+    }
 </style>
+
+<a href="{% url 'car_catalog' %}" class="back-button">&#x2190; Back</a>
 
 <div class="car-detail">
     <h1>{{ car.make }} {{ car.model }}</h1>

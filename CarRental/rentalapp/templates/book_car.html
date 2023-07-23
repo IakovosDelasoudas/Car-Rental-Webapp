@@ -1,10 +1,71 @@
 {% extends 'rentalapp/base.html' %}
 
 {% block content %}
-  <h1>Book car: {{ car.model }}</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Book</button>
-  </form>
+    <style>
+        .book-car h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #508eb7;
+        }
+
+        .book-car form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .book-car form input[type="date"], form input[type="time"] {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #508eb7;
+            font-size: 1.1em;
+        }
+
+        .book-car form button {
+            background-color: #508eb7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .book-car form button:hover {
+            background-color: #4076a6;
+        }
+    </style>
+
+    <div class="book-car">
+      <h1>Book car: {{ car.model }}</h1>
+      <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <p id="cost">Total Cost: $0.00</p>
+          <button type="submit">Book</button>
+      </form>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+    $(document).ready(function(){
+        function calculateCost() {
+            var pickupDate = new Date($('#id_start_date').val());
+            var returnDate = new Date($('#id_end_date').val());
+
+            var diffTime = Math.abs(returnDate - pickupDate);
+            var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            var dailyCost = {{ car.price_per_day }};
+            var cost = diffDays * dailyCost;
+
+            $('#cost').text('Total Cost: $' + cost.toFixed(2));
+        }
+
+        $('#id_start_date, #id_end_date').change(calculateCost);
+    });
+    </script>
+
 {% endblock %}

@@ -47,13 +47,23 @@ def logout_view(request):
 
 def book_car(request, car_id):
     car = get_object_or_404(Car, pk=car_id)
-    form = BookingForm(request.POST or None)
-    if form.is_valid():
-        booking = form.save(commit=False)
-        booking.user = request.user
-        booking.car = car
-        booking.save()
-        return HttpResponseRedirect('/thanks/')  # Redirect after POST
+
+    if request.method == "POST":
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            booking = form.save(commit=False)
+            booking.car = car
+            booking.user = request.user
+            booking.save()
+
+            return redirect('car_detail', car_id=car.id)
+        else:
+            print(form.errors)  # Add this line
+
+    else:
+        form = BookingForm()
+
+    return render(request, 'book_car.html', {'form': form, 'car': car})
 
 def car_catalog(request):
     cars = Car.objects.all()

@@ -48,6 +48,7 @@ class Booking(models.Model):
     def __str__(self):
         return f"Booking {self.pk} by {self.user.username}"
 
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=15)

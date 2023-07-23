@@ -14,6 +14,8 @@ urlpatterns = [
     path('car/<int:car_id>/', views.car_detail, name='car_detail'),
     path('profile/', profile, name='profile'),
     path('logout/', logout_view, name='logout'),
+    path('car_detail/<int:car_id>/', views.car_detail, name='car_detail'),
+
 ]
 
 if settings.DEBUG:

@@ -1,11 +1,54 @@
 {% extends 'rentalapp/base.html' %}
 
 {% block content %}
-<h2>Profile</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Update</button>
-</form>
-<a href="{% url 'logout' %}">Logout</a>
+<style>
+    .profile {
+        text-align: center;
+        padding: 2em;
+    }
+
+    .profile h1 {
+        color: #333;
+    }
+
+    .profile form {
+        display: inline-block;
+        margin: 1em auto;
+        border: 1px solid #ccc;
+        padding: 2em;
+        border-radius: 1em;
+        text-align: left;
+    }
+
+    .profile form button {
+        display: block;
+        background: #007BFF;
+        color: #fff;
+        padding: 0.5em 1em;
+        margin: 0 auto;
+        border-radius: 2em;
+        border: none;
+    }
+
+    .profile a {
+        display: block;
+        background: #FF0000;
+        color: #fff;
+        padding: 0.5em 1em;
+        text-decoration: none;
+        margin: 1em auto;
+        border-radius: 2em;
+        width: fit-content;
+    }
+</style>
+
+<div class="profile">
+    <h1>Profile</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update</button>
+    </form>
+    <a href="{% url 'logout' %}">Logout</a>
+</div>
 {% endblock %}

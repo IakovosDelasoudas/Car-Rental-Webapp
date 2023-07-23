@@ -16,6 +16,8 @@ from django.contrib.auth import logout, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.forms import UserChangeForm
 from .forms import EditProfileForm
+from django.shortcuts import render, get_object_or_404
+from .models import Car, Review
 
 
 
@@ -106,4 +108,10 @@ def add_review(request, car_id):
 def car_detail(request, car_id):
     car = get_object_or_404(Car, id=car_id)
     reviews = Review.objects.filter(car=car)
-    return render(request, 'rentalapp/car_detail.html', {'car': car, 'reviews': reviews})
+    
+    context = {
+        'car': car,
+        'reviews': reviews,
+        'range': range(0, 5),  # to use in the star display loop
+    }
+    return render(request, 'rentalapp/car_detail.html', context)

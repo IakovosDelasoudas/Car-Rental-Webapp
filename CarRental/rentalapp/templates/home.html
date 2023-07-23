@@ -1,16 +1,58 @@
 {% extends 'rentalapp/base.html' %}
 
-{% load static %}   <!-- Load static files -->
+{% load static %}
 
 {% block content %}
+<div class="home-page">
+    <style>
+        .home-page h1, .home-page h2 {
+            text-align: center;
+            font-size: 2.5em;
+        }
+
+        .home-page p {
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .home-page a {
+            display: block;
+            margin: 20px auto;
+            text-align: center;
+            background-color: #007BFF;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            width: 200px;
+            transition: background-color 0.3s;
+        }
+
+        .home-page a:hover {
+            background-color: #0056b3;
+        }
+
+        .home-page img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+    </style>
+
     <h1>Welcome to Car Rental</h1>
     <p>Your one-stop solution for comfortable and affordable car rentals. Navigate through our extensive car catalog, book instantly, and get ready to hit the road!</p>
     <a href="{% url 'car_catalog' %}">Explore Car Catalog</a>
-
+    
+    <!-- Adding a break for vertical spacing -->
+    <br>
+    
     <!-- If you want to display special offers, add them here -->
     <h2>Special Offers</h2>
     <p>Stay tuned for amazing deals!</p>
 
     <!-- You can add images or graphics here -->
     <img src="{% static 'images/homepage_image.jpg' %}" alt="Car image">
+</div>
 {% endblock %}

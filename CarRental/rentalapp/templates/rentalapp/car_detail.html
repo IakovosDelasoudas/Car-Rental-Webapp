@@ -1,15 +1,81 @@
 {% extends 'rentalapp/base.html' %}
 
 {% block content %}
-<h2>{{ car.make }} {{ car.model }}</h2>
-<p>Price per day: {{ car.price_per_day }}</p>
-<h3>Reviews</h3>
-{% for review in reviews %}
-    <h4>{{ review.user.username }}</h4>
-    <p>Rating: {{ review.rating }}</p>
-    <p>{{ review.comment }}</p>
-{% empty %}
-    <p>No reviews yet.</p>
-{% endfor %}
-<a href="{% url 'add_review' car.id %}">Add a review</a>
+<style>
+    .car-detail {
+        text-align: center;
+        padding: 2em;
+        padding-bottom: 10em;
+    }
+
+    .car-detail h1, .car-detail h3 {
+        color: #333;
+    }
+
+    .car-detail p {
+        color: #666;
+    }
+
+    .car-detail img {
+        margin: 2em auto;
+        max-width: 600px; /* Limiting the maximum width of the image */
+        height: auto; /* Maintain aspect ratio */
+    }
+
+    .review {
+        border-top: 1px solid #ccc;
+        padding: 1em 0;
+    }
+
+    .review h4 {
+        margin: 0;
+        color: #007BFF;
+    }
+
+    .review p {
+        margin: 0.5em 0;
+    }
+    
+    .review a {
+        display: inline-block;
+        background: #007BFF;
+        color: #fff;
+        padding: 0.5em 1em;
+        text-decoration: none;
+        margin-top: 1em;
+        border-radius: 2em;
+    }
+</style>
+
+<div class="car-detail">
+    <h1>{{ car.make }} {{ car.model }}</h1>
+
+    <!-- Display the car image -->
+    {% if car.image %}
+        <img src="{{ car.image.url }}" alt="{{ car.make }} {{ car.model }}">
+    {% else %}
+        <p>No image available.</p>
+    {% endif %}
+
+    <p>Price per day: {{ car.price_per_day }} €</p>
+    <h3>Reviews</h3>
+    {% for review in reviews %}
+        <div class="review">
+            <h4>{{ review.user.username }}</h4>
+            <p>Rating: 
+            {% for i in range %}
+                {% if i < review.rating %}
+                    ⭐ <!-- Display filled star for points of rating -->
+                {% else %}
+                    ☆ <!-- Display empty star for remaining points up to 5 -->
+                {% endif %}
+            {% endfor %}
+            </p>
+            <p>{{ review.comment }}</p>
+        </div>
+    {% empty %}
+        <p>No reviews yet.</p>
+    {% endfor %}
+    <a href="{% url 'add_review' car.id %}">Add a review</a>
+</div>
 {% endblock %}

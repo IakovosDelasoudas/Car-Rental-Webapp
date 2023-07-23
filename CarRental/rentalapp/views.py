@@ -12,6 +12,11 @@ from django.http import HttpResponseRedirect
 from .models import Car
 from .forms import BookingForm
 from django.contrib.auth import logout
+from django.contrib.auth import logout, update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import UserChangeForm
+from .forms import EditProfileForm
+
 
 
 # Create your views here.
@@ -71,15 +76,16 @@ def login_view(request):
 @login_required
 def profile(request):
     if request.method == 'POST':
-        # Update the user object
-        request.user.first_name = request.POST['first_name']
-        request.user.last_name = request.POST['last_name']
-        request.user.email = request.POST['email']
-        request.user.save()
-        # Redirect to the same page after the form is processed to prevent a post-data-refresh
-        return redirect('profile')
+        form = EditProfileForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+
     else:
-        return render(request, 'profile.html')
+        form = EditProfileForm(instance=request.user)
+
+    return render(request, 'registration/profile.html', {'form': form})
 
 @login_required
 def add_review(request, car_id):

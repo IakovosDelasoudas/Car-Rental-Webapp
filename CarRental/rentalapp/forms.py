@@ -1,5 +1,7 @@
 from django import forms
 from .models import Booking, UserProfile, Review
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserChangeForm
 
 class BookingForm(forms.Form):
     pickup_date = forms.DateTimeField(
@@ -22,6 +24,13 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['phone_number']
+
+class EditProfileForm(UserChangeForm):
+    password = None
+
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email']
 
 class ReviewForm(forms.ModelForm):
     class Meta:

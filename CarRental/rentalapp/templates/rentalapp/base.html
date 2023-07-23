@@ -27,6 +27,14 @@
             margin: 0;
             flex-grow: 1;
             text-decoration: none;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .header a img {
+        display: inline-block;
+        vertical-align: middle;
         }
 
         .header h1 a {
@@ -97,7 +105,11 @@
 </head>
 <body>
     <div class="header">
-        <a href="{% url 'home' %}"><h1>Car Rental</h1></a>
+        <a href="{% url 'home' %}">
+            <h1>Car Rental</h1>
+            {% load static %}
+            <img src="{% static 'images/logo0.png' %}" alt="Car Rental Logo" height="50">
+        </a>
         <div>
             <a href="{% url 'home' %}">Home</a>
             {% if user.is_authenticated %}

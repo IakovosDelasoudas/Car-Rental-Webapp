@@ -50,7 +50,20 @@
     
     <!-- If you want to display special offers, add them here -->
     <h2>Special Offers</h2>
-    <p>Stay tuned for amazing deals!</p>
+    
+    {% if user.is_authenticated %}
+        <p>Recommended just for you!</p>
+        <!-- Display the recommended cars here -->
+        {% for car in recommended_cars %}
+            <!-- Car information and link to its detail page here -->
+        {% empty %}
+            <p>No recommendations available at the moment. Check back after you've rented some cars!</p>
+        {% endfor %}
+    {% else %}
+        <p>To provide personalized recommendations, please log in or sign up if you don't have an account yet.</p>
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Sign Up</a>
+    {% endif %}
 
     <!-- You can add images or graphics here -->
     <img src="{% static 'images/homepage_image.jpg' %}" alt="Car image">

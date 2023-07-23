@@ -54,6 +54,16 @@ class UserProfile(models.Model):
     rental_history = models.ManyToManyField('Booking')
     license_number = models.CharField(max_length=255)
 
+    def get_most_recent_car_type(self):
+        # Get the most recent booking made by the user
+        recent_booking = self.rental_history.order_by('-end_date').first()
+
+        # Return the type of the car associated with this booking
+        if recent_booking:
+            return recent_booking.car.type
+        else:
+            return None
+
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     car = models.ForeignKey(Car, on_delete=models.CASCADE)

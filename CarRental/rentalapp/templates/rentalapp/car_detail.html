@@ -54,6 +54,14 @@
         text-decoration: none;
         color: #333;
     }
+
+    .rent-link {
+    color: white;
+    background-color: #007bff;
+    padding: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    }
 </style>
 
 <a href="{% url 'car_catalog' %}" class="back-button">&#x2190; Back</a>
@@ -69,6 +77,14 @@
     {% endif %}
 
     <p>Price per day: {{ car.price_per_day }} €</p>
+    <a href="{% url 'book_car' car.id %}" class="rent-link">Rent this car</a>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <h3>Reviews</h3>
     {% for review in reviews %}
         <div class="review">

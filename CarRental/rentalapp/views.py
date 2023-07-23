@@ -18,12 +18,28 @@ from django.contrib.auth.forms import UserChangeForm
 from .forms import EditProfileForm
 from django.shortcuts import render, get_object_or_404
 from .models import Car, Review
+from django.db.models import Q
+from django.contrib import messages
 
 
 
 # Create your views here.
 def home(request):
-    return render(request, 'home.html')
+    if request.user.is_authenticated:
+        user_profile = UserProfile.objects.get(user=request.user)
+        most_recent_car_type = user_profile.get_most_recent_car_type()
+
+        if most_recent_car_type:
+            recommended_cars = Car.objects.filter(type=most_recent_car_type)
+        else:
+            recommended_cars = Car.objects.none()  # Return an empty QuerySet
+    else:
+        recommended_cars = Car.objects.none()  # Return an empty QuerySet for non-logged in users
+
+    context = {
+        'recommended_cars': recommended_cars,
+    }
+    return render(request, 'home.html', context)
 
 def logout_view(request):
     logout(request)
@@ -33,14 +49,28 @@ def book_car(request, car_id):
     car = get_object_or_404(Car, pk=car_id)
     form = BookingForm(request.POST or None)
     if form.is_valid():
-        # You can use form.cleaned_data to access validated form data
-        # Save booking to database or perform any other action
+        booking = form.save(commit=False)
+        booking.user = request.user
+        booking.car = car
+        booking.save()
         return HttpResponseRedirect('/thanks/')  # Redirect after POST
-    return render(request, 'book_car.html', {'car': car, 'form': form})
 
 def car_catalog(request):
     cars = Car.objects.all()
-    return render(request, 'rentalapp/car_catalog.html', {'cars': cars})
+
+    # Get search parameters from the query string
+    query = request.GET.get('q')
+    type_query = request.GET.get('type')
+
+    if query:  # If a query is specified
+        # Filter the cars based on the query
+        cars = cars.filter(Q(make__icontains=query) | Q(model__icontains=query))
+
+    if type_query:  # If a type is specified
+        # Filter the cars based on the type
+        cars = cars.filter(type__iexact=type_query)
+
+    return render(request, 'rentalapp/car_catalog.html', {'cars': cars, 'query': query, 'type_query': type_query})
 
 def car_details(request, car_id):
     car = Car.objects.get(id=car_id)
@@ -95,6 +125,9 @@ def add_review(request, car_id):
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
+            if not Booking.objects.filter(user=request.user, car=car).exists():
+                messages.error(request, 'You can only review cars you have rented.')
+                return redirect('car_detail', car_id=car.id)
             review = form.save(commit=False)
             review.car = car
             review.user = request.user
@@ -103,6 +136,7 @@ def add_review(request, car_id):
     else:
         form = ReviewForm()
     return render(request, 'rentalapp/add_review.html', {'form': form, 'car': car})
+
 
 @login_required
 def car_detail(request, car_id):

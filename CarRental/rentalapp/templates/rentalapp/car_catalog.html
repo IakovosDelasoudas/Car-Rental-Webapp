@@ -7,7 +7,7 @@
         padding: 2em;
     }
     
-    .catalog h2 {
+    .catalog h1 {
         color: #333;
     }
 
@@ -35,7 +35,34 @@
 </style>
 
 <div class="catalog">
-    <h2>Car Catalog</h2>
+    <h1>Car Catalog</h1>
+
+    <form method="GET" action="{% url 'car_catalog' %}">
+        <input type="text" name="q" placeholder="Search by make or model...">
+        <select name="type">
+            <option value="">All types</option>
+            <option value="COUPE/SPORT">Coupe/Sport</option>
+            <option value="HATCHBACK">Hatchback</option>
+            <option value="SUV">SUV/4x4</option>
+            <option value="VAN">Van</option>
+            <option value="SEDAN">Sedan</option>
+        </select>
+        <input type="submit" value="Search">
+    </form>
+
+    {% if query or type_query %}
+    <p>Showing search results for:
+        {% if query %}
+        make or model containing "{{ query }}"
+        {% endif %}
+        {% if query and type_query %}
+        and
+        {% endif %}
+        {% if type_query %}
+        type "{{ type_query }}"
+        {% endif %}
+    </p>
+    {% endif %}
 
     <div class="car-list">
         {% for car in cars %}

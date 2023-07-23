@@ -1,15 +1,50 @@
 {% extends 'rentalapp/base.html' %}
 
 {% block content %}
+<style>
+    .catalog {
+        text-align: center;
+        padding: 2em;
+    }
+    
+    .catalog h2 {
+        color: #333;
+    }
+
+    .car-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2em;
+        list-style: none;
+        padding: 0;
+        margin: 2em 0;
+    }
+
+    .car-item {
+        padding: 1em;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        text-decoration: none;
+        color: #333;
+    }
+
+    .car-item:hover {
+        background: #f9f9f9;
+        cursor: pointer;
+    }
+</style>
+
+<div class="catalog">
     <h2>Car Catalog</h2>
 
-    <ul>
+    <div class="car-list">
         {% for car in cars %}
-        <li>
             <a href="{% url 'car_detail' car.id %}">
-                {{ car.make }} {{ car.model }}
+                <div class="car-item">
+                    {{ car.make }} {{ car.model }}
+                </div>
             </a>
-        </li>
         {% endfor %}
-    </ul>
+    </div>
+</div>
 {% endblock %}
